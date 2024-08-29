@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}
+<title>板位布局</title>
+{% endblock %}
+{% block nav %}
+
+{% endblock %}
+{% block content %}
+    <style>
+        div.row {
+            margin-top: 5px
+        }
+    </style>
+<div class="">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    {{ render_breadcrumb_item('home', '主页', 'bi bi-house') }}
+                    {{ render_breadcrumb_item('block.tablet_layout', '板位布局') }}
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <button class="btn btn-outline-primary" onclick="location.href='/block/layout_add'">添加布局</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <ul class="list-group">
+            {% if layouts|length == 0 %}
+                <li class="list-group-item">还没有布局设置，请先添加</li>
+                {% else %}
+                {% for i, layout in layouts.items() %}
+                    <li class="list-group-item">
+                    <a href="/block/layout_edit/{{ layout.id }}">{{ layout.name }}</a>
+                  </li>
+                {% endfor %}
+            {% endif %}
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

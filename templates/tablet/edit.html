@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% block title %}
+    <title>试剂盒参数</title>
+{% endblock %}
+{% from 'bootstrap5/nav.html' import render_breadcrumb_item %}
+{% block content %}
+    {% set block_width = 100 %}
+    {% set block_height = 80 %}
+    {% set x_gap = block_width if tablet.n_cols == 1 else block_width / (tablet.n_cols - 1) %}
+    {% set y_gap = block_height if tablet.n_rows == 1 else block_height / (tablet.n_rows - 1) %}
+    <style>
+        div.row {
+            margin-top: 5px
+        }
+        div.row label {
+            margin-bottom: 1px;
+        }
+        table.block-table {
+            border-collapse: collapse;
+            border: solid 2px #30a138;
+            overflow-x: scroll;
+            width: 600px;
+            height: 400px;
+        }
+        table.block-table td {
+            border: solid 2px #30a138;
+            background-color: #b6b2b2;
+        }
+        {#table td.highlighted {#}
+        {#  background-color:#999;#}
+        {#}#}
+    </style>
+
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                        {{ render_breadcrumb_item('home', '主页', 'bi bi-house') }}
+                    {{ render_breadcrumb_item('tablet.tablet_index', '试剂盒设置') }}
+                    {{ render_breadcrumb_item('tablet.tablet_edit', tablet.name) }}
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <form action="/tablet/save" method="post">
+        <input class='form-control' name="id" value="{{ tablet.id }}" hidden="hidden">
+        <div class="row">
+            <div class="col-6">
+                <label for="name" class='form-label'>名称</label>
+                <input class='form-control' name="name" id="name" value="{{ tablet.name }}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label class='form-label' for="depth_h">高度</label>
+                <input class='form-control' name="depth_h" id="depth_h" type="number" value="{{ tablet.depth[0] }}">
+
+            </div>
+            <div class="col-6">
+                <label class='form-label' for="depth_l">底高</label>
+                <input class='form-control' name="depth_l" id="depth_l" type="number" value="{{ tablet.depth[1] }}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label class='form-label' for="um">上边距</label>
+                <input class='form-control' name="um" id="um" type="number" value="{{ tablet.um }}">
+
+            </div>
+            <div class="col-6">
+                <label class='form-label' for="lm">左边距</label>
+                <input class='form-control' name="lm" id="lm" type="number" value="{{ tablet.lm }}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label class='form-label' for="nrows">行数</label>
+                <input class='form-control' name="nrows" id="nrows" type="number" value="{{ tablet.n_rows }}">
+
+            </div>
+            <div class="col-6">
+                <label class='form-label' for="ncols">列数</label>
+                <input class='form-control' name="ncols" id="ncols" type="number" value="{{ tablet.n_cols }}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+{#                <button class="btn btn-primary" type="submit">确认</button>#}
+            </div>
+            <div class="col-6 text-end">
+
+                <button class="btn btn-outline-danger mr-6" type="button" id="delete_button" >删除</button>
+                <button class="btn btn-primary" type="submit">保存修改</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="row mt-5" style="overflow-x: scroll;">
+        <div class="col-12">
+
+            <table id="tablet_show" class="block-table">
+            {% for row in range(tablet.n_rows) %}
+                <tr>
+
+                    {% for col in range(tablet.n_cols) %}
+                        <td>
+                            {% set well_number = (col + 1) + (row * tablet.n_cols) %}
+                            {#            {{ block_number }}#}
+                        </td>
+                    {% endfor %}
+
+                </tr>
+
+            {% endfor %}
+        </table>
+        </div>
+    </div>
+
+    <script>
+    $(
+        function () {
+            const delete_button = $('#delete_button')
+            const popover = new bootstrap.Popover(delete_button, {
+              popperConfig(defaultBsPopperConfig) {
+                const newPopperConfig = {
+                    html: true,
+                    content: '<button class="btn btn-warning" onclick="window.location.href=\'/tablet/\'">确认删除</button>',
+                    delay: 2000,
+
+                }
+                defaultBsPopperConfig['content'] = '<button class="btn btn-warning" onclick="window.location.href=\'/tablet/\'">确认删除</button>'
+                defaultBsPopperConfig['delay'] = 2000
+                defaultBsPopperConfig['html'] = true
+                return newPopperConfig
+              }
+            })
+            delete_button.on('click', function () {
+                popover.toggle()
+            })
+          var isMouseDown = false,
+            isHighlighted;
+          $("#tablet_show td")
+            .mousedown(function () {
+              isMouseDown = true;
+              $(this).css('background-color',getRandomColor())
+              isHighlighted = $(this).hasClass("highlighted");
+              return false; // prevent text selection
+            })
+            .mouseover(function () {
+              if (isMouseDown) {
+                $(this).css('background-color',getRandomColor())
+              }
+            })
+            .bind("selectstart", function () {
+              return false;
+            })
+
+          $(document)
+            .mouseup(function () {
+              isMouseDown = false;
+            });
+        });
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+    </script>
+{% endblock %}

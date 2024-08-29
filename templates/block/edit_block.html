@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block title %}
+    <title>修改板位信息</title>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    {{ render_breadcrumb_item('home', '主页', 'bi bi-house') }}
+                    {{ render_breadcrumb_item('block.block_index', '板位信息') }}
+                    {{ render_breadcrumb_item('block.block_edit', block.block_number ) }}
+                </ol>
+            </nav>
+        </div>
+    </div>
+        <form action="/block/save" method="post">
+    <div class="row">
+        <div class="col-12">
+                    <label for="name">名称</label>
+                    <input class="form-control" name="name" id="name" required value="{{ block.block_name }}">
+            </div>
+
+        </div>
+            <div class="row">
+
+            <div class="col-6">
+                <label for="lt_l"></label>
+                <input class="form-control" id="lt_l" required name="position_lt_x" value="{{ block.position_lt[0] }}">
+            </div>
+{#                    <input class="form-control" style="display: none" required name="block_id" value="{{ block.block_number }}">#}
+            <div class="col-6">
+                    <label for="rb_r"></label>
+                    <input class="form-control" id="rb_r" required name="position_rb_x" value="{{ block.position_rb[0] }}">
+            </div>
+            </div>
+            <div class="row">
+            <div class="col-6">
+                    <label for="lt_t"></label>
+                    <input class="form-control" id="lt_t" required name="position_lt_y" value="{{ block.position_lt[1] }}">
+            </div>
+            <div class="col-6">
+                    <label for="rb_b"></label>
+                    <input class="form-control" id="rb_b" required name="position_rb_y" value="{{ block.position_rb[1] }}">
+            </div>
+            </div>
+            {#        <tr><td colspan="4">------------------------------------------</td></tr>#}
+            {##}
+            {#        <tr><td>行数：</td>#}
+            {#            <td><input type="number" accept="0123456789." name="row_count" value="{{ block.row_count }}"></td>#}
+            {#        </tr>#}
+            {#        <tr><td>列数：</td>#}
+            {#            <td><input type="number" accept="0123456789." name="col_count" value="{{ block.col_count }}"></td>#}
+            {#        </tr>#}
+            {#        <tr><td>下高度：</td>#}
+            {#            <td><input type="number" accept="0123456789." name="depth_min" value="{{ block.depth[0] }}"></td>#}
+            {#        </tr>#}
+            {#        <tr><td>上高度：</td>#}
+            {#            <td><input type="number" accept="0123456789." name="depth_max" value="{{ block.depth[1] }}"></td>#}
+            {#        </tr>#}
+            {#        <tr><td colspan="4">------------------------------------------</td></tr>#}
+                    <button type="submit">确认</button>
+        </form>
+
+
+{#<script>#}
+    {#console.log("block width: {{ block.position_rb[0] - block.position_lt[0] }}")#}
+    {#console.log("block height: {{ block.position_rb[1] - block.position_lt[1] }}")#}
+    {#console.log("well x: {{ block.x_gap }}, y: {{ block.y_gap }}")#}
+{#</script>#}
+{% endblock %}

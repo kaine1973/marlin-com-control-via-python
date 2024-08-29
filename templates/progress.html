@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>design</title>
+</head>
+<body>
+
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th><a href="javascript:change_tip()">枪头</a></th>
+                <th><a href="javascript:add_block()">板位</a></th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+</body>
+<script>
+    function change_tip() {
+        if (!confirm("changing tip...")){
+            return 0
+        }
+        alert("Done!")
+    }
+
+    function add_block() {
+        alert("adding block...")
+    }
+</script>
+</html>

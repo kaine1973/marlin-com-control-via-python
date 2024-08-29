@@ -1,0 +1,15 @@
+{% extends 'base/nav.html' %}
+
+{% macro render_breadcrumb_item(endpoint, text, icon=None) %}
+    {% set active = True if request.endpoint and request.endpoint == endpoint else False %}
+    <li class="breadcrumb-item{% if active %} active" aria-current="page{% endif %}">
+        {% if icon %}
+        <i class="{{ icon }}"></i>
+        {% endif %}
+        {% if active %}
+            {{ text }}
+        {% else %}
+        <a href="{{ url_for(endpoint, **kwargs) }}">{{ text }}</a>
+        {% endif %}
+    </li>
+{% endmacro %}

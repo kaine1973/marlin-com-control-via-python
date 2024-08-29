@@ -1,0 +1,64 @@
+{
+    "_Block__block_name": "\u78c1\u73e0",
+    "_Block__block_number": 4,
+    "_Block__col_count": 1,
+    "_Block__depth": [
+        0.0,
+        30.0
+    ],
+    "_Block__height": [
+        10,
+        30
+    ],
+    "_Block__position_lt": [
+        169.2,
+        113.0
+    ],
+    "_Block__position_rb": [
+        172.0,
+        143.0
+    ],
+    "_Block__row_count": 1,
+    "_Block__save_path": "static/blocks/block_4.json",
+    "_Block__valid_col": 0,
+    "_Block__valid_row": 0,
+    "_Block__wells": [
+        [
+            [
+                169.2,
+                113.0
+            ]
+        ]
+    ],
+    "_Block__x_gap": 0,
+    "_Block__y_gap": 0,
+    "_block_name": "Block_4",
+    "_block_number": 4,
+    "_col_count": 1,
+    "_depth": [
+        0,
+        30
+    ],
+    "_position_lt": [
+        0,
+        0
+    ],
+    "_position_rb": [
+        0,
+        0
+    ],
+    "_row_count": 1,
+    "_save_path": "static/blocks/block_4.json",
+    "_valid_col": 0,
+    "_valid_row": 0,
+    "_wells": [
+        [
+            [
+                0,
+                0
+            ]
+        ]
+    ],
+    "_x_gap": 0,
+    "_y_gap": 0
+}

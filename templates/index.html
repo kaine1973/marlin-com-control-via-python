@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}
+<title>主页</title>
+{% endblock %}
+
+{% block content %}
+<h1>欢迎</h1>
+<p>英莱盾自动化工作站.</p>
+<ul class="list-group">
+    <li class="list-group-item"><a href="{{ url_for('block.block_index') }}">板位信息</a></li>
+    <li class="list-group-item"><a href="{{ url_for('tablet.tablet_index') }}">试剂盒信息</a></li>
+    <li class="list-group-item"><a href="{{ url_for('block.tablet_layout') }}">布局设置</a></li>
+</ul>
+{% endblock %}

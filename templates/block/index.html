@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}
+    <title>板位信息</title>
+{% endblock %}
+{% block content %}
+<style>
+    table {
+        border-collapse: collapse;
+    }
+    td {
+        width: 200px;
+        height: 100px;
+        border:solid 1px black;
+        padding: 0 0 0 0;
+    }
+</style>
+
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    {{ render_breadcrumb_item('home', '主页', 'bi bi-house') }}
+                    {{ render_breadcrumb_item('block.block_index', '板位信息') }}
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+
+            <table>
+                {% for row in range(row_count) %}
+                <tr>
+                {% for col in range(col_count) %}
+                    <td>
+                        {% set block_number = (row + 1) + (col * row_count) %}
+                        <div>
+                            <span>{{ block_number }}: </span>
+                            <span style="text-decoration: underline;">{{ blocks[block_number].block_name }}</span>
+                        </div>
+                        <div>
+                            <span>X: {{ blocks[block_number].position_lt[0] }} - {{ blocks[block_number].position_rb[0] }}</span>
+                            <span style="display:block">Y: {{ blocks[block_number].position_lt[1] }} - {{ blocks[block_number].position_rb[1] }}</span>
+                        </div>
+                        <a href="/block/{{ block_number }}/edit">修改</a>
+                    </td>
+                {% endfor %}
+
+                </tr>
+
+            {% endfor %}
+            </table>
+
+        </div>
+    </div>
+<script type="text/javascript">
+    {#$(#}
+    {#    $.each($('td'), function (i, v) {#}
+    {#        let block_id = $(v).find('span')[0]#}
+    {#        block_id = $(block_id).text().split(':')[0]#}
+    {#        if($.isNumeric(block_id)){#}
+    {#            $.get('/block/query/'+block_id, function (data) {#}
+    {#                let block = JSON.parse(data)#}
+    {#                $($(v).find('span')[0]).text(block_id +": "+ block._Block__block_name)#}
+    {#            })#}
+    {#        }#}
+    {#    })#}
+    {#)#}
+</script>
+{% endblock %}

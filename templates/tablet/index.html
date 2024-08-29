@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}
+    <title>试剂盒信息</title>
+{% endblock %}
+{% from 'bootstrap5/nav.html' import render_breadcrumb_item %}
+{% block content %}
+
+    <div class="">
+
+
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                    {{ render_breadcrumb_item('home', '主页', 'bi bi-house') }}
+                {{ render_breadcrumb_item('tablet.tablet_index', '试剂盒设置') }}
+            </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <button class="btn btn-outline-primary" onclick="location.href='/tablet/new'">添加试剂盒</button>
+        </div>
+    </div>
+        <div >
+            <div class="row">
+                <div class="col-5">
+                    <ul class="list-group">
+                    {% for i, tablet in tablets.items() %}
+
+                      <li class="list-group-item">
+                        <a href="/tablet/edit/{{ tablet.id }}">{{ tablet.name }}</a>
+                      </li>
+
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

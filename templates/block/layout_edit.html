@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block title %}
+<title>布局修改 - {{ layout.name }}</title>
+{% endblock %}
+{% block nav %}
+
+{% endblock %}
+{% block content %}
+    <style>
+        table {
+        border-collapse: collapse;
+        }
+        td {
+            width: 200px;
+            height: 100px;
+            border:solid 1px black;
+            padding: 0 0 0 0;
+        }
+        div.row {
+            margin-top:6px;
+        }
+    </style>
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    {{ render_breadcrumb_item('home', '主页', 'bi bi-house') }}
+                    {{ render_breadcrumb_item('block.tablet_layout', '板位布局') }}
+                    {{ render_breadcrumb_item('block.layout_edit', '布局修改 '+layout.id ) }}
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-10">
+            <label for="id"></label>
+            <input class="form-control" name="id" id="id" disabled value="{{ layout.id }}" hidden="hidden">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-10">
+            <label for="name">布局名称</label>
+            <input class="form-control" name="name" id="name" value="{{ layout.name }}" required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-10">
+            <table>
+                {% for row in range(row_count) %}
+                <tr>
+                {% for col in range(col_count) %}
+                    <td>
+                        {% set block_number = (row + 1) + (col * row_count) %}
+                        {% set block = blocks[block_number] %}
+                        <div>
+                            <span data-block-id="{{ block_number }}">{{ block_number }}: </span>
+                            <span style="text-decoration: underline;">{{ block.block_name }}</span>
+                        </div>
+            {#            <div>#}
+            {#                <span>X: {{ block.position_lt[0] }} - {{ block.position_rb[0] }}</span>#}
+            {#                <span style="display:block">Y: {{ block.position_lt[1] }} - {{ block.position_rb[1] }}</span>#}
+            {#            </div>#}
+                        <select class="form-control" name="tablet_id_{{ block_number }}">
+                            <option value="None">不使用</option>
+                            {% for x,tablet in tablets.items() %}
+                                <option value="{{ tablet.id }}" {% if layout.config[block_number|string] == tablet.id|string %}selected{% endif %}>
+                                    {{ tablet.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                {% endfor %}
+
+                </tr>
+
+            {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-10 text-end">
+            <button class="btn btn-primary" type="submit" onclick="save_layout()">保存</button>
+        </div>
+    </div>
+    <script>
+        function save_layout() {
+            let config = {}
+            $.each($('table td'),function (i,e){
+                block_id = $(e).find('span').data('block-id')
+                table_id = $(e).find('select').val()
+                config[block_id]= table_id
+            })
+            let formdata = new FormData()
+            const id = $('#id').val()
+            const name = $('#name').val()
+            if(name.replaceAll(" ","") === ""){
+                alert('名称不能为空')
+                return
+            }
+            formdata.append('id', id)
+            formdata.append('name', name)
+            formdata.append('config', config)
+
+            $.ajax({
+              type: "POST",
+              url: '/block/layout_save',
+              data: {
+                  'id': id,
+                  'name': name,
+                  'config': JSON.stringify(config)
+              },
+              success: function (data) {
+                  console.log(data)
+                  if(data.code === 200)
+                    window.location.replace("/block/layout_edit/"+id+"?success="+data.message)
+              }
+            });
+        }
+    </script>
+{% endblock %}

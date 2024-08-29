@@ -1,3 +1,6 @@
+import re
+import time
+
 from serial import Serial
 from serial.tools import list_ports
 
@@ -22,43 +25,40 @@ class Connector:
         print("----------------")
         return __port_links
 
-    def connect(self, port=None, baud_rate="115200"):
+    def connect(self, port:str=None, baud_rate="250000"):
         if port is None:
             port = self.list_ports()[0].device
         self.__serial = Serial(port, baud_rate)
         # self.__serial.open()
         if self.__serial.isOpen():
-            while self.read_resp() is None:
-                print("Connected!!")
-        print(self.__serial.readline())
+            print("Connected!!")
+            time.sleep(5)
+            while True:
+                resp = self.read_resp()
+                print(resp)
+                if resp == "":
+                    break
+
 
     def send_code(self, command):
         self.__serial.write(bytes(command + "\n", "UTF-8"))
         print("SENT:", command)
-        while True:
-            resp = self.read_resp()
-            print("++", resp, "++")
-            if resp == "ok":
-                return
 
-    def send_codes(self, commands):
-        for command in commands:
-            if self.__stop:
-                break
-            self.send_code(command)
-
+        resp = self.read_resp()
+        # print('\r',resp, end="")
+        while "ok" not in resp:
+            resp += self.read_resp()
+            # print('\r',resp, end="")
+            # self.send_code(command)
+        return resp
     def read_resp(self):
+
         if self.__serial is not None and self.__serial.isOpen():
-            return self.__serial.readline().decode().strip()
+            return self.__serial.read_all().decode().strip()
         else:
             return None
 
-    @property
     def stop(self):
-        return self.__stop
-
-    @stop.setter
-    def stop(self, value):
         self.__stop = True
 
     def disconnect(self):
@@ -67,3 +67,17 @@ class Connector:
 
     def __del__(self):
         self.disconnect()
+
+# conn = Connector()
+
+# conn.connect()
+# while True:
+#     print(conn.read_resp())
+#     time.sleep(1)
+
+def time_require():
+    compiler = re.compile("[XYZ](\d+)")
+    for distance in compiler.finditer("G0 X100 Y200"):
+        print(distance.group(1))
+
+time_require()
